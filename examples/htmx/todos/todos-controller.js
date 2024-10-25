@@ -33,7 +33,7 @@ export default class TodosController {
 
 	async editTodoLabel(id, label) {
 		const updatedTodo = this.todoApi.editTodoLabel(id, label);
-		const markup = await ejs.renderFile('templates/todo.ejs', {
+		const markup = await ejs.renderFile('templates/single-todo.ejs', {
 			todo: updatedTodo,
 		});
 
