@@ -5,7 +5,7 @@ body {
 }
 
 body {
-	font: 16px 'Helvetica Neue', Helvetica, Arial;
+	font: 16px "Helvetica Neue", Helvetica, Arial;
 	font-weight: 300;
 	line-height: 1.5;
 	width: auto;
@@ -13,9 +13,10 @@ body {
 	color: #353535;
 	font-smoothing: antialiased;
 }
-body.learn-page{
-    max-width: 1600px;
-    margin: 0 auto;
+
+body.learn-page {
+	max-width: 1600px;
+	margin: 0 auto;
 }
 
 h1,
@@ -40,7 +41,6 @@ a,
 	font-weight: 500;
 	cursor: pointer;
 }
-
 
 a:hover,
 .link:hover {
@@ -91,12 +91,27 @@ header nav a:not(:last-child) {
 	margin-bottom: 20px;
 }
 
+.textIntro {
+	padding-bottom: 15px;
+}
+
+.borderExamples {
+	border: solid 1px #80808021;
+	border-radius: 9px;
+	background: #8080800d;
+}
+
+.sectionTarget {
+	border-right: solid 1px #d3d3d359;
+}
+
 .screenshot {
 	width: 100%;
 	height: auto;
 	max-width: 558px;
 	margin-top: 12px;
 	float: right;
+	border-radius: 25px;
 }
 
 .tagline2 {
@@ -117,7 +132,7 @@ header nav a:not(:last-child) {
 }
 
 .whats-new li:before {
-	content: '✔';
+	content: "✔";
 	position: absolute;
 	left: -20px;
 }
@@ -145,7 +160,7 @@ header nav a:not(:last-child) {
 
 .applist-item {
 	padding: 4px;
-    display: block;
+	display: block;
 	border-radius: 4px;
 }
 
@@ -166,7 +181,7 @@ header nav a:not(:last-child) {
 	white-space: nowrap;
 	text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.25);
 	padding: 2px 4px;
-	background-color: rgba(0, 0, 0, .1);
+	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 3px;
 }
 
@@ -178,14 +193,14 @@ header nav a:not(:last-child) {
 	margin-right: 5px;
 }
 
-.badge[data-color="green"]  {
+.badge[data-color="green"] {
 	background-color: green;
 	color: white;
 }
 
 .applist .labs a,
 .labs-example {
-	color: #582C42;
+	color: #582c42;
 }
 
 .legend {
@@ -265,18 +280,18 @@ header nav a:not(:last-child) {
 }
 
 .quote p:before {
-	content: '“';
+	content: "“";
 	font-size: 50px;
-	opacity: .15;
+	opacity: 0.15;
 	position: absolute;
 	top: -20px;
 	left: 3px;
 }
 
 .quote p:after {
-	content: '”';
+	content: "”";
 	font-size: 50px;
-	opacity: .15;
+	opacity: 0.15;
 	position: absolute;
 	bottom: -42px;
 	right: 3px;
@@ -300,17 +315,17 @@ header nav a:not(:last-child) {
 .speech-bubble {
 	position: relative;
 	padding: 10px;
-	background: rgba(0, 0, 0, .04);
+	background: rgba(0, 0, 0, 0.04);
 	border-radius: 5px;
 }
 
 .speech-bubble:after {
-	content: '';
+	content: "";
 	position: absolute;
 	top: 100%;
 	left: 20px;
 	border: 13px solid transparent;
-	border-top-color: rgba(0, 0, 0, .04);
+	border-top-color: rgba(0, 0, 0, 0.04);
 }
 
 .zocial.red {
@@ -318,7 +333,7 @@ header nav a:not(:last-child) {
 }
 
 .zocial.gray {
-	background-color: rgba(0, 0, 0, .5);
+	background-color: rgba(0, 0, 0, 0.5);
 }
 
 .zocial.ltgray {
@@ -327,7 +342,7 @@ header nav a:not(:last-child) {
 }
 
 .zocial.ltgray strong {
-	color: #B83F45;
+	color: #b83f45;
 }
 
 .zocial.small {
@@ -351,7 +366,7 @@ a.zocial {
 	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
 	user-select: none;
 	position: relative;
-	border-radius: .3em;
+	border-radius: 0.3em;
 }
 
 @media (max-width: 480px) {
@@ -398,56 +413,57 @@ a.zocial {
 }
 
 hr {
-    margin: 20px 0;
-    border: 0;
-    border-top: 1px dashed #c5c5c5;
-    border-bottom: 1px dashed #f7f7f7;
+	margin: 20px 0;
+	border: 0;
+	border-top: 1px dashed #c5c5c5;
+	border-bottom: 1px dashed #f7f7f7;
 }
 
 /* Learn page specifics*/
 .learn-page > .learn {
-    position: fixed;
-    height: 100%;
-    width: 272px;
-    top: 0px;
-    left: -300px;
-    overflow-y: auto;
-    padding: 0px;
-    background-color: rgba(255, 255, 255, .6);
-    transition-property: left;
-    transition-duration: 500ms;
-    line-height: 36px;
-    text-indent: 20px;
+	position: fixed;
+	height: 100%;
+	width: 272px;
+	top: 0px;
+	left: -300px;
+	overflow-y: auto;
+	padding: 0px;
+	background-color: rgba(255, 255, 255, 0.6);
+	transition-property: left;
+	transition-duration: 500ms;
+	line-height: 36px;
+	text-indent: 20px;
 }
 .learn-page nav a {
-    display: block;
+	display: block;
 }
 
-.learn nav a:hover, .learn-page nav a.selected {
-    background-color: #b83f45;
-    color: #ffffff;
+.learn nav a:hover,
+.learn-page nav a.selected {
+	background-color: #b83f45;
+	color: #ffffff;
 }
 
 .learn .content {
-    padding: 15px;
+	padding: 15px;
 }
 .learn-page header {
-    width: 100%;
+	width: 100%;
 }
 
 div.learn {
-    margin: 50px 20px 20px 20px;
-    padding: 20px;
-    background: #eee;
+	margin: 50px 20px 20px 20px;
+	padding: 20px;
+	background: #eee;
 }
 
 @media (min-width: 899px) {
-    .learn-page {
-        width: auto;
-        padding-left: 300px;
-    }
+	.learn-page {
+		width: auto;
+		padding-left: 300px;
+	}
 
-    .learn-page > .learn {
-        left: 8px;
-    }
+	.learn-page > .learn {
+		left: 8px;
+	}
 }
