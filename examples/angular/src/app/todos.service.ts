@@ -10,6 +10,11 @@ export class TodosService {
     todos: Todo[] = [];
 
     addItem(title: string): void {
+
+      if (!title){
+        return;
+      }
+
       const todo: Todo = {
         title,
         completed: false,
