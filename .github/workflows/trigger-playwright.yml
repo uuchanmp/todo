@@ -59,7 +59,6 @@ jobs:
             STATUS=$(echo "$RESPONSE" | jq -r '.status')
 
             echo "Current Status: $STATUS"
-            echo "https://api.github.com/repos/RTP-OTS/playwright/actions/runs/$PLAYWRIGHT_RUN_ID"
 
             if [[ "$STATUS" == "completed" ]]; then
               CONCLUSION=$(echo "$RESPONSE" | jq -r '.conclusion')
@@ -73,6 +72,6 @@ jobs:
               fi
             fi
 
-            echo "⏳ Waiting 30 seconds before checking again..."
-            sleep 30
+            echo "⏳ Waiting 5 seconds before checking again..."
+            sleep 5
           done
