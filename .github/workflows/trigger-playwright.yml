@@ -13,28 +13,28 @@ jobs:
     steps:
       - name: Trigger Playwright Workflow in Another Repo
         run: |
+          echo "🚀 Triggering Playwright Workflow..."
           RESPONSE=$(curl -s -X POST \
-          -H "Accept: application/vnd.github.v3+json" \
-          -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
-          https://api.github.com/repos/RTP-OTS/playwright/actions/workflows/automate-test.yml/dispatches \
-          -d '{"ref":"main"}')
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
+            https://api.github.com/repos/RTP-OTS/playwright/actions/workflows/automate-test.yml/dispatches \
+            -d '{"ref":"main"}')
 
-          echo "✅ Playwright workflow triggered."
+          echo "✅ Playwright workflow triggered successfully."
 
       - name: Wait for Playwright Workflow to Start
         run: |
           echo "⏳ Waiting for Playwright workflow to start..."
           PLAYWRIGHT_RUN_ID=""
 
-          # รอให้ Workflow Run ID ปรากฏใน GitHub Actions
           for i in {1..10}; do
             RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
-              "https://api.github.com/repos/RTP-OTS/playwright/actions/runs?event=workflow_dispatch")
+              "https://api.github.com/repos/RTP-OTS/playwright/actions/workflows/automate-test.yml/runs")
 
             PLAYWRIGHT_RUN_ID=$(echo "$RESPONSE" | jq -r '.workflow_runs | map(select(.status == "in_progress" or .status == "queued")) | first | .id')
 
             if [[ -n "$PLAYWRIGHT_RUN_ID" && "$PLAYWRIGHT_RUN_ID" != "null" ]]; then
-              echo "🎯 Playwright Run ID found: $PLAYWRIGHT_RUN_ID"
+              echo "✅ Found Playwright Run ID: $PLAYWRIGHT_RUN_ID"
               break
             fi
 
@@ -43,47 +43,13 @@ jobs:
           done
 
           if [[ -z "$PLAYWRIGHT_RUN_ID" || "$PLAYWRIGHT_RUN_ID" == "null" ]]; then
-            echo "❌ Failed to retrieve Playwright Run ID"
+            echo "❌ Failed to get Playwright Run ID"
             exit 1
           fi
 
-          echo "✅ Playwright workflow started with Run ID: $PLAYWRIGHT_RUN_ID"
-
       - name: Wait for Playwright Workflow to Complete
         run: |
-          echo "🕵️ Checking Playwright workflow status..."
-          STATUS="in_progress"
-
-          echo "⏳ Waiting 30 seconds before first check..."
-          sleep 30  # เพิ่มดีเลย์ก่อนเรียก API ครั้งแรก
-
-          while [[ "$STATUS" == "in_progress" || "$STATUS" == "queued" ]]; do
-            API_URL="https://api.github.com/repos/RTP-OTS/playwright/actions/runs/$PLAYWRIGHT_RUN_ID"
-            echo "🔍 Fetching status from: $API_URL"
-            
-            RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.PAT_TOKEN }}" "$API_URL")
-
-            STATUS=$(echo "$RESPONSE" | jq -r '.status')
-            echo "📌 Current Status: $STATUS"
-
-            if [[ "$STATUS" == "completed" ]]; then
-              CONCLUSION=$(echo "$RESPONSE" | jq -r '.conclusion')
-
-              if [[ "$CONCLUSION" == "success" ]]; then
-                echo "✅ Playwright Tests Passed!"
-                exit 0
-              else
-                echo "❌ Playwright Tests Failed!"
-                exit 1
-              fi
-            fi
-
-            echo "⏳ Waiting for 30 seconds before checking again..."
-            sleep 30
-          done
-
-        run: |
-          echo "🔍 Checking Playwright workflow status..."
+          echo "🔄 Checking Playwright workflow status..."
           STATUS="in_progress"
 
           while [[ "$STATUS" == "in_progress" || "$STATUS" == "queued" ]]; do
@@ -92,7 +58,8 @@ jobs:
 
             STATUS=$(echo "$RESPONSE" | jq -r '.status')
 
-            echo "📌 Current Status: $STATUS"
+            echo "Current Status: $STATUS"
+            echo "https://api.github.com/repos/RTP-OTS/playwright/actions/runs/$PLAYWRIGHT_RUN_ID""
 
             if [[ "$STATUS" == "completed" ]]; then
               CONCLUSION=$(echo "$RESPONSE" | jq -r '.conclusion')
@@ -106,6 +73,6 @@ jobs:
               fi
             fi
 
-            echo "⏳ Waiting for 30 seconds before checking again..."
+            echo "⏳ Waiting 30 seconds before checking again..."
             sleep 30
           done
