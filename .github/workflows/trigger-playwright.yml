@@ -1,77 +1,21 @@
-name: Trigger Playwright Test
+name: Trigger and Wait Playwright Tests
 
 on:
   pull_request:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
 
 jobs:
-  trigger-playwright:
+  trigger_and_wait_playwright:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Trigger Playwright Workflow in Another Repo
-        run: |
-          echo "🚀 Triggering Playwright Workflow..."
-          RESPONSE=$(curl -s -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
-            https://api.github.com/repos/RTP-OTS/playwright/actions/workflows/automate-test.yml/dispatches \
-            -d '{"ref":"main"}')
-
-          echo "✅ Playwright workflow triggered successfully."
-
-      - name: Wait for Playwright Workflow to Start
-        run: |
-          echo "⏳ Waiting for Playwright workflow to start..."
-          PLAYWRIGHT_RUN_ID=""
-
-          for i in {1..10}; do
-            RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
-              "https://api.github.com/repos/RTP-OTS/playwright/actions/workflows/automate-test.yml/runs")
-
-            PLAYWRIGHT_RUN_ID=$(echo "$RESPONSE" | jq -r '.workflow_runs | map(select(.status == "in_progress" or .status == "queued")) | first | .id')
-
-            if [[ -n "$PLAYWRIGHT_RUN_ID" && "$PLAYWRIGHT_RUN_ID" != "null" ]]; then
-              echo "✅ Found Playwright Run ID: $PLAYWRIGHT_RUN_ID"
-              break
-            fi
-
-            echo "⏳ Waiting 10 seconds for workflow to start..."
-            sleep 10
-          done
-
-          if [[ -z "$PLAYWRIGHT_RUN_ID" || "$PLAYWRIGHT_RUN_ID" == "null" ]]; then
-            echo "❌ Failed to get Playwright Run ID"
-            exit 1
-          fi
-
-      - name: Wait for Playwright Workflow to Complete
-        run: |
-          echo "🔄 Checking Playwright workflow status..."
-          STATUS="in_progress"
-
-          while [[ "$STATUS" == "in_progress" || "$STATUS" == "queued" ]]; do
-            RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
-              "https://api.github.com/repos/RTP-OTS/playwright/actions/runs/$PLAYWRIGHT_RUN_ID")
-
-            STATUS=$(echo "$RESPONSE" | jq -r '.status')
-
-            echo "Current Status: $STATUS"
-
-            if [[ "$STATUS" == "completed" ]]; then
-              CONCLUSION=$(echo "$RESPONSE" | jq -r '.conclusion')
-
-              if [[ "$CONCLUSION" == "success" ]]; then
-                echo "✅ Playwright Tests Passed!"
-                exit 0
-              else
-                echo "❌ Playwright Tests Failed!"
-                exit 1
-              fi
-            fi
-
-            echo "⏳ Waiting 5 seconds before checking again..."
-            sleep 5
-          done
+      - name: Trigger Playwright Tests
+        uses: convictional/trigger-workflow-and-wait@v1.6.2
+        with:
+          owner: RTP-OTS
+          repo: playwright
+          github_token: ${{ secrets.PAT_TOKEN }}
+          workflow_file_name: automate-test.yml
+          ref: main
+          wait_interval: 30
+          propagate_failure: true
