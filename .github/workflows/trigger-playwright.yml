@@ -20,36 +20,46 @@ jobs:
           -d '{"ref":"main"}')
 
           echo "Playwright workflow triggered."
+      
+      - name: Wait for Playwright Workflow to Start
+        run: |
+          echo "Waiting for Playwright workflow to start..."
+          PLAYWRIGHT_RUN_ID=""
+          while [[ -z "$PLAYWRIGHT_RUN_ID" ]]; do
+            RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
+              "https://api.github.com/repos/RTP-OTS/playwright/actions/runs?event=workflow_dispatch")
+            
+            PLAYWRIGHT_RUN_ID=$(echo "$RESPONSE" | jq -r '.workflow_runs | map(select(.status == "in_progress" or .status == "queued")) | first | .id')
+            
+            if [[ -n "$PLAYWRIGHT_RUN_ID" ]]; then
+              echo "Playwright Run ID found: $PLAYWRIGHT_RUN_ID"
+              break
+            fi
+
+            echo "Waiting 10 seconds for workflow to start..."
+            sleep 10
+          done
 
       - name: Wait for Playwright Workflow to Complete
         run: |
           echo "Checking Playwright workflow status..."
-          PLAYWRIGHT_RUN_ID=""
-          STATUS=""
-
-          while [[ -z "$PLAYWRIGHT_RUN_ID" || "$STATUS" == "in_progress" ]]; do
+          STATUS="in_progress"
+          while [[ "$STATUS" == "in_progress" || "$STATUS" == "queued" ]]; do
             RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
-              "https://api.github.com/repos/RTP-OTS/playwright/actions/runs?event=workflow_dispatch")
+              "https://api.github.com/repos/RTP-OTS/playwright/actions/runs/$PLAYWRIGHT_RUN_ID")
             
-            PLAYWRIGHT_RUN_ID=$(echo "$RESPONSE" | jq -r '.workflow_runs[0].id')
-            STATUS=$(echo "$RESPONSE" | jq -r '.workflow_runs[0].status')
+            STATUS=$(echo "$RESPONSE" | jq -r '.status')
 
-            echo "Playwright Run ID: $PLAYWRIGHT_RUN_ID"
             echo "Current Status: $STATUS"
 
             if [[ "$STATUS" == "completed" ]]; then
-              echo "✅ Playwright Tests Completed!"
-              
-              # ดึงผลลัพธ์ของ Playwright Tests
-              CONCLUSION=$(curl -s -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
-                "https://api.github.com/repos/RTP-OTS/playwright/actions/runs/$PLAYWRIGHT_RUN_ID" | jq -r '.conclusion')
-              
+              CONCLUSION=$(echo "$RESPONSE" | jq -r '.conclusion')
               if [[ "$CONCLUSION" == "success" ]]; then
-                echo "✅ Playwright Tests Passed!"
+                echo "Playwright Tests Passed!"
                 exit 0
               else
-                echo "❌ Playwright Tests Failed!"
-                exit 1  # ❌ ทำให้ Workflow นี้ล้มเหลวเพื่อบล็อก PR
+                echo "Playwright Tests Failed!"
+                exit 1
               fi
             fi
 
