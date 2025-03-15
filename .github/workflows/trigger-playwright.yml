@@ -16,4 +16,4 @@ jobs:
           -H "Accept: application/vnd.github.v3+json" \
           -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
           https://api.github.com/repos/RTP-OTS/playwright/actions/workflows/automate-test.yml/dispatches \
-          -d '{"ref":"main"}'
+          -d '{"ref":"develop"}'
