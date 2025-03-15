@@ -13,8 +13,38 @@ jobs:
     steps:
       - name: Trigger Playwright Workflow in Another Repo
         run: |
-          curl -X POST \
+          RESPONSE=$(curl -X POST \
           -H "Accept: application/vnd.github.v3+json" \
           -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
           https://api.github.com/repos/RTP-OTS/playwright/actions/workflows/automate-test.yml/dispatches \
-          -d '{"ref":"main"}'
+          -d '{"ref":"main"}')
+
+          echo "Playwright workflow triggered."
+
+      - name: Wait for Playwright Workflow to Complete
+        run: |
+          echo "Checking Playwright workflow status..."
+          PLAYWRIGHT_RUN_ID=""
+          while [[ -z "$PLAYWRIGHT_RUN_ID" || "$STATUS" == "in_progress" ]]; do
+            RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
+              "https://api.github.com/repos/RTP-OTS/playwright/actions/runs?event=workflow_dispatch")
+            
+            PLAYWRIGHT_RUN_ID=$(echo "$RESPONSE" | jq -r '.workflow_runs[0].id')
+            STATUS=$(echo "$RESPONSE" | jq -r '.workflow_runs[0].status')
+
+            echo "Playwright Run ID: $PLAYWRIGHT_RUN_ID"
+            echo "Current Status: $STATUS"
+
+            if [[ "$STATUS" == "completed" ]]; then
+              echo "Playwright Tests Completed!"
+              break
+            fi
+
+            if [[ "$STATUS" == "failure" ]]; then
+              echo "Playwright Tests Failed!"
+              exit 1
+            fi
+
+            echo "Waiting for 30 seconds before checking again..."
+            sleep 30
+          done
