@@ -59,7 +59,7 @@ jobs:
             STATUS=$(echo "$RESPONSE" | jq -r '.status')
 
             echo "Current Status: $STATUS"
-            echo "https://api.github.com/repos/RTP-OTS/playwright/actions/runs/$PLAYWRIGHT_RUN_ID""
+            echo "https://api.github.com/repos/RTP-OTS/playwright/actions/runs/$PLAYWRIGHT_RUN_ID"
 
             if [[ "$STATUS" == "completed" ]]; then
               CONCLUSION=$(echo "$RESPONSE" | jq -r '.conclusion')
