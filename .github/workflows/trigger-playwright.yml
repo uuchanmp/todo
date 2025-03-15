@@ -41,7 +41,7 @@ jobs:
             fi
 
             if [[ "$STATUS" == "failure" ]]; then
-              echo "❌ Playwright Tests Failed!"
+              echo "Playwright Tests Failed!"
               exit 1
             fi
 
