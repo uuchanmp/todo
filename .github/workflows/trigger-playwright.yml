@@ -51,6 +51,38 @@ jobs:
 
       - name: Wait for Playwright Workflow to Complete
         run: |
+          echo "🕵️ Checking Playwright workflow status..."
+          STATUS="in_progress"
+
+          echo "⏳ Waiting 30 seconds before first check..."
+          sleep 30  # เพิ่มดีเลย์ก่อนเรียก API ครั้งแรก
+
+          while [[ "$STATUS" == "in_progress" || "$STATUS" == "queued" ]]; do
+            API_URL="https://api.github.com/repos/RTP-OTS/playwright/actions/runs/$PLAYWRIGHT_RUN_ID"
+            echo "🔍 Fetching status from: $API_URL"
+            
+            RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.PAT_TOKEN }}" "$API_URL")
+
+            STATUS=$(echo "$RESPONSE" | jq -r '.status')
+            echo "📌 Current Status: $STATUS"
+
+            if [[ "$STATUS" == "completed" ]]; then
+              CONCLUSION=$(echo "$RESPONSE" | jq -r '.conclusion')
+
+              if [[ "$CONCLUSION" == "success" ]]; then
+                echo "✅ Playwright Tests Passed!"
+                exit 0
+              else
+                echo "❌ Playwright Tests Failed!"
+                exit 1
+              fi
+            fi
+
+            echo "⏳ Waiting for 30 seconds before checking again..."
+            sleep 30
+          done
+
+        run: |
           echo "🔍 Checking Playwright workflow status..."
           STATUS="in_progress"
 
