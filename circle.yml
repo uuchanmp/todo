@@ -39,7 +39,11 @@ jobs:
     <<: *defaults
   dojo:
     <<: *defaults
+  preact:
+    <<: *defaults
   react:
+    <<: *defaults
+  react-redux:
     <<: *defaults
   vue:
     <<: *defaults
@@ -65,8 +69,10 @@ jobs:
     <<: *defaults
   flight:
     <<: *defaults
+  lit:
+    <<: *defaults
   # compiled-to-js frameworks
-  kotlin-react:
+  svelte:
     <<: *defaults
   typescript-react:
     <<: *defaults
@@ -88,8 +94,6 @@ jobs:
     <<: *defaults
   typescript-angular:
     <<: *defaults
-  scalajs-react:
-    <<: *defaults
   # labs
   chaplin-brunch:
     <<: *defaults
@@ -108,8 +112,6 @@ jobs:
   puremvc:
     <<: *defaults
   exoskeleton:
-    <<: *defaults
-  react-backbone:
     <<: *defaults
   angular2:
     <<: *defaults
@@ -151,7 +153,9 @@ workflows:
     jobs:
       - backbone
       - dojo
+      - preact
       - react
+      - react-redux
       - vue
       - angularjs
       - knockback
@@ -164,10 +168,12 @@ workflows:
       - knockoutjs
       - polymer
       - flight
+      - lit
   # second tab - compiled-to-js frameworks
   compiled-to-js:
     jobs:
       # elm is not working very well
+      - svelte
       - typescript-react
       - binding-scala
       - angular-dart
@@ -178,8 +184,6 @@ workflows:
       - humble
       - closure
       - typescript-angular
-      - scalajs-react
-      - kotlin-react
   # third tab - labs
   labs:
     jobs:
@@ -194,7 +198,6 @@ workflows:
       - sammyjs
       - puremvc
       - exoskeleton
-      - react-backbone
       - angular2
       - knockoutjs_require
       - durandal

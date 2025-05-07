@@ -5,7 +5,14 @@
 sudo: false
 language: node_js
 node_js:
-  - '9.3.0'
+  - 10.13
+# if using Ubuntu 16 need this library
+# https://github.com/cypress-io/cypress-documentation/pull/1647
+addons:
+  apt:
+    packages:
+    - libgconf-2-4
+
 notifications:
   irc: 'irc.freenode.org#tastejs'
 cache:
@@ -33,7 +40,7 @@ env:
 
 #update npm to latest stable version
 before_install:
-  - npm install --global npm@5.8.0
+  - npm install --global npm@6.10.0
 
 # common build steps for each test job
 defaults: &defaults
@@ -146,10 +153,6 @@ jobs:
       <<: *defaults
     - stage: test
       env:
-        - CYPRESS_framework=kotlin-react
-      <<: *defaults
-    - stage: test
-      env:
         - CYPRESS_framework=lavaca_require
       <<: *defaults
     - stage: test
@@ -174,7 +177,7 @@ jobs:
       <<: *defaults
     - stage: test
       env:
-        - CYPRESS_framework=react-backbone
+        - CYPRESS_framework=react-redux
       <<: *defaults
     - stage: test
       env:
@@ -186,7 +189,7 @@ jobs:
       <<: *defaults
     - stage: test
       env:
-        - CYPRESS_framework=scalajs-react
+        - CYPRESS_framework=svelte
       <<: *defaults
     - stage: test
       env:
@@ -210,5 +213,17 @@ jobs:
       <<: *defaults
     - stage: test
       env:
+        - CYPRESS_framework=preact
+      <<: *defaults
+    - stage: test
+      env:
         - CYPRESS_framework=vue
+      <<: *defaults
+    - stage: test
+      env:
+        - CYPRESS_framework=lit
+      <<: *defaults
+    - stage: test
+      env:
+        - CYPRESS_framework=web-components
       <<: *defaults
