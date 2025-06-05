@@ -8,15 +8,21 @@ var app = module.exports = express();
 var favicon = require('serve-favicon');
 
 app.use(express.static(__dirname));
+
 app.use(favicon(__dirname + '/site-assets/favicon.ico'));
 
 Object.defineProperty(module.exports, 'learnJson', {
-	set: function (backend) {
-		learnJson.backend = backend;
-		fs.writeFile(require.resolve('./learn.json'), JSON.stringify(learnJson, null, 2), function (err) {
-			if (err) {
-				throw err;
-			}
-		});
-	}
+    set: function (backend) {
+        learnJson.backend = backend;
+        fs.writeFile(require.resolve('./learn.json'), JSON.stringify(learnJson, null, 2), function (err) {
+            if (err) {
+                throw err;
+            }
+        });
+    }
+});
+
+var port = process.env.PORT || 8080;
+app.listen(port, function () {
+    console.log('Server is running on http://localhost:' + port);
 });
