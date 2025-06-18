@@ -143,6 +143,8 @@ jobs:
     <<: *defaults
   jsblocks:
     <<: *defaults
+  imba:
+    <<: *defaults
 
 workflows:
   version: 2
@@ -212,3 +214,4 @@ workflows:
       - ractive
       - foam
       - jsblocks
+      - imba
