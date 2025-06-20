@@ -1,13 +1,4 @@
 module.exports = [
-  // durandal routing is very very slow.
-  // see: https://github.com/tastejs/todomvc/issues/831
-  // fixed - just needed to wait for local storage to have the items before
-  // going to another view
-  // 'TodoMVC - durandal, Routing, should allow me to display active items',
-  // 'TodoMVC - durandal, Routing, should allow me to display completed items',
-  // 'TodoMVC - durandal, Routing, should allow me to display all items',
-  // 'TodoMVC - durandal, Routing, should highlight the currently applied filter',
-
   // https://github.com/tastejs/todomvc/issues/828
   // routing should default to all
   // 'TodoMVC - sammyjs, Routing, should highlight the currently applied filter',
@@ -18,12 +9,13 @@ module.exports = [
   // 'TodoMVC - angularjs_require, Mark all as completed, should allow me to clear the completion state of all items',
   // jscs:disable
   // 'TodoMVC - angularjs_require, Mark all as completed, complete all checkbox should update state when items are completed / cleared',
-
   // jscs:enable
-  // https://github.com/tastejs/todomvc/issues/815
-  // does not hide other controls while editing
-  // 'TodoMVC - dojo, Editing, should hide other controls when editing',
+
+  // https://github.com/tastejs/todomvc/issues/1928
+  // does not reliably save edits
+  'dojo, should allow me to edit an item',
   'dojo, should save edits on blur',
+  'dojo, should trim entered text',
   'dojo, should remove the item if an empty text string was entered',
 
   // https://github.com/tastejs/todomvc/issues/816
@@ -36,11 +28,6 @@ module.exports = [
   // 'TodoMVC - somajs_require, Editing, should remove the item if an empty text string was entered',
   // 'TodoMVC - somajs_require, Editing, should cancel edits on escape',
 
-  // Kendo does NOT save todos when marked as completed
-  'kendo, should allow me to mark all items as completed',
-  'kendo, should allow me to clear the complete state of all items',
-  'kendo, complete all checkbox should update state when items are completed / cleared',
-  'kendo, should remove the item if an empty text string was entered',
 
   // the following are covered by the following issue:
   // https://github.com/tastejs/todomvc/issues/789
@@ -48,7 +35,6 @@ module.exports = [
   'TodoMVC - ariatemplates, Editing, should cancel edits on escape',
   'TodoMVC - dermis, Editing, should cancel edits on escape',
   // 'TodoMVC - duel, Editing, should cancel edits on escape',
-  // 'TodoMVC - extjs_deftjs, Editing, should cancel edits on escape',
   // 'TodoMVC - olives, Editing, should cancel edits on escape',
   // 'TodoMVC - rappidjs, Editing, should cancel edits on escape',
   'TodoMVC - serenadejs, Editing, should cancel edits on escape',
@@ -58,10 +44,6 @@ module.exports = [
   'olives, should focus on the todo input field',
 
   // 'rappidjs, should remove the item if an empty text string was entered',
-
-  // this seems like an error in Cypress itself
-  // ReferenceError: command is not defined
-  'react-backbone, should save edits on blur',
 
   // need to debug ember events - but need to rebuild the app,
   // since it is minified code
@@ -90,18 +72,12 @@ module.exports = [
   // all the following are covered by this issue:
   // https://github.com/tastejs/todomvc/issues/856
   // 'TodoMVC - knockoutjs, Routing, should respect the back button',
-  // 'TodoMVC - spine, Routing, should respect the back button',
   // 'TodoMVC - serenadejs, Routing, should respect the back button',
   'TodoMVC - flight, Routing, should respect the back button',
   'TodoMVC - lavaca_require, Routing, should respect the back button',
   // 'TodoMVC - somajs_require, Routing, should respect the back button',
 
   // the following implementations do not support routing
-  'TodoMVC - extjs_deftjs, Routing, should allow me to display active items',
-  'TodoMVC - extjs_deftjs, Routing, should allow me to display completed items',
-  'TodoMVC - extjs_deftjs, Routing, should allow me to display all items',
-  'TodoMVC - extjs_deftjs, Routing, should highlight the currently applied filter',
-  'TodoMVC - extjs_deftjs, Routing, should respect the back button',
   'TodoMVC - olives, Routing, should allow me to display active items',
   'TodoMVC - olives, Routing, should allow me to display completed items',
   'TodoMVC - olives, Routing, should allow me to display all items',
@@ -144,27 +120,6 @@ module.exports = [
   // 'TodoMVC - typescript-backbone, Routing, should highlight the currently applied filter',
   // 'TodoMVC - typescript-backbone, Routing, should respect the back button',
 
-  'extjs_deftjs, should focus on the todo input field',
-
-  // EXTJS is not spec compliant (by a long way!)
-  'TodoMVC - extjs, should focus on the todo input field',
-  'TodoMVC - extjs, New Todo, should show #main and #footer when items added',
-  'TodoMVC - extjs, Mark all as completed, should allow me to mark all items as completed',
-  'TodoMVC - extjs, Mark all as completed, complete all checkbox should update state when items are completed / cleared',
-  'TodoMVC - extjs, Item, should allow me to mark items as complete',
-  'TodoMVC - extjs, Item, should allow me to un-mark items as complete',
-  'TodoMVC - extjs, Editing, should save edits on blur',
-  'TodoMVC - extjs, Editing, should cancel edits on escape',
-  'TodoMVC - extjs, Counter, should display the current number of todo items',
-  'TodoMVC - extjs, Clear completed button, should display the number of completed items',
-  'TodoMVC - extjs, Clear completed button, should remove completed items when clicked',
-  'TodoMVC - extjs, Clear completed button, should be hidden when there are no items that are completed',
-  'TodoMVC - extjs, Persistence, should persist its data',
-  'TodoMVC - extjs, Routing, should allow me to display active items',
-  'TodoMVC - extjs, Routing, should allow me to display completed items',
-  'TodoMVC - extjs, Routing, should allow me to display all items',
-  'TodoMVC - extjs, Routing, should highlight the currently applied filter',
-  'TodoMVC - extjs, Routing, should respect the back button',
 
   'ractive, should allow me to edit an item',
   'ractive, should remove the item if an empty text string was entered',

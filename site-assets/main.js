@@ -22,7 +22,7 @@
 			var $this = $(this);
 			$this.popover({
 				trigger: 'manual',
-				placement: 'right',
+				placement: 'auto',
 				animation: false,
 				html: true,
 				title: this.firstChild.textContent + '<a href="' + $this.data('source') + '">Website</a>'
@@ -178,7 +178,6 @@
 		var tabs = document.querySelector(AppTabs.selectors.tabs);
 		tabs.addEventListener('iron-select', this.onSelect.bind(this));
 		this.listHeight = 0;
-		tabs.select(0);
 	}
 
 	AppTabs.selectors = {

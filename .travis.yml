@@ -5,7 +5,14 @@
 sudo: false
 language: node_js
 node_js:
-  - '9.3.0'
+  - 10.13
+# if using Ubuntu 16 need this library
+# https://github.com/cypress-io/cypress-documentation/pull/1647
+addons:
+  apt:
+    packages:
+    - libgconf-2-4
+
 notifications:
   irc: 'irc.freenode.org#tastejs'
 cache:
@@ -31,6 +38,10 @@ env:
     - GH_PROJECT_NAME: todomvc
     - CHROME_PATH: '/home/travis/build/tastejs/todomvc/chrome-linux/chrome'
 
+#update npm to latest stable version
+before_install:
+  - npm install --global npm@6.10.0
+
 # common build steps for each test job
 defaults: &defaults
   script:
@@ -41,17 +52,13 @@ defaults: &defaults
 jobs:
   include:
     # install NPM dependencies before each test job
-    - stage: npm install
+    - stage: npm ci
       script:
-        - npm install
+        - npm ci
         - $(npm bin)/print-env TRAVIS
     # define a separate script for each "examples/*" folder
     # this will run it in a separate job on TravisCI
     # all these jobs belong to same stage "test" thus will run in parallel
-    - stage: test
-      env:
-        - CYPRESS_framework=ampersand
-      <<: *defaults
     - stage: test
       env:
         - CYPRESS_framework=angular-dart
@@ -63,14 +70,6 @@ jobs:
     - stage: test
       env:
         - CYPRESS_framework=angularjs
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=ariatemplates
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=atmajs
       <<: *defaults
     - stage: test
       env:
@@ -102,10 +101,6 @@ jobs:
       <<: *defaults
     - stage: test
       env:
-        - CYPRESS_framework=chaplin-brunch
-      <<: *defaults
-    - stage: test
-      env:
         - CYPRESS_framework=closure
       <<: *defaults
     - stage: test
@@ -122,10 +117,6 @@ jobs:
       <<: *defaults
     - stage: test
       env:
-        - CYPRESS_framework=durandal
-      <<: *defaults
-    - stage: test
-      env:
         - CYPRESS_framework=emberjs
       <<: *defaults
     - stage: test
@@ -138,22 +129,6 @@ jobs:
       <<: *defaults
     - stage: test
       env:
-        - CYPRESS_framework=extjs_deftjs
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=flight
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=foam
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=humble
-      <<: *defaults
-    - stage: test
-      env:
         - CYPRESS_framework=jquery
       <<: *defaults
     - stage: test
@@ -163,10 +138,6 @@ jobs:
     - stage: test
       env:
         - CYPRESS_framework=jsblocks
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=kendo
       <<: *defaults
     - stage: test
       env:
@@ -186,15 +157,7 @@ jobs:
       <<: *defaults
     - stage: test
       env:
-        - CYPRESS_framework=meteor
-      <<: *defaults
-    - stage: test
-      env:
         - CYPRESS_framework=mithril
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=olives
       <<: *defaults
     - stage: test
       env:
@@ -202,15 +165,7 @@ jobs:
       <<: *defaults
     - stage: test
       env:
-        - CYPRESS_framework=puremvc
-      <<: *defaults
-    - stage: test
-      env:
         - CYPRESS_framework=ractive
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=rappidjs
       <<: *defaults
     - stage: test
       env:
@@ -222,7 +177,7 @@ jobs:
       <<: *defaults
     - stage: test
       env:
-        - CYPRESS_framework=react-backbone
+        - CYPRESS_framework=react-redux
       <<: *defaults
     - stage: test
       env:
@@ -234,39 +189,7 @@ jobs:
       <<: *defaults
     - stage: test
       env:
-        - CYPRESS_framework=sammyjs
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=sapui5
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=scalajs-react
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=serenadejs
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=socketstream
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=somajs
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=somajs_require
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=spine
-      <<: *defaults
-    - stage: test
-      env:
-        - CYPRESS_framework=troopjs_require
+        - CYPRESS_framework=svelte
       <<: *defaults
     - stage: test
       env:
@@ -286,11 +209,11 @@ jobs:
       <<: *defaults
     - stage: test
       env:
-        - CYPRESS_framework=vanilladart
+        - CYPRESS_framework=vanillajs
       <<: *defaults
     - stage: test
       env:
-        - CYPRESS_framework=vanillajs
+        - CYPRESS_framework=preact
       <<: *defaults
     - stage: test
       env:
@@ -298,6 +221,9 @@ jobs:
       <<: *defaults
     - stage: test
       env:
-        - CYPRESS_framework=webrx
+        - CYPRESS_framework=lit
       <<: *defaults
-
+    - stage: test
+      env:
+        - CYPRESS_framework=web-components
+      <<: *defaults

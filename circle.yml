@@ -14,9 +14,10 @@ defaults: &defaults
         npm_config_unsafe_perm: true
   steps:
     - checkout
+    -run: npm install --global npm@5.8.0
     - restore_cache:
         key: root-deps
-    - run: npm install
+    - run: npm ci
     - run: npm prune
     - save_cache:
         key: root-deps-{{ checksum "package.json" }}
@@ -38,7 +39,11 @@ jobs:
     <<: *defaults
   dojo:
     <<: *defaults
+  preact:
+    <<: *defaults
   react:
+    <<: *defaults
+  react-redux:
     <<: *defaults
   vue:
     <<: *defaults
@@ -64,14 +69,14 @@ jobs:
     <<: *defaults
   flight:
     <<: *defaults
+  lit:
+    <<: *defaults
   # compiled-to-js frameworks
-  spine:
+  svelte:
     <<: *defaults
   typescript-react:
     <<: *defaults
   binding-scala:
-    <<: *defaults
-  vanilladart:
     <<: *defaults
   angular-dart:
     <<: *defaults
@@ -89,18 +94,12 @@ jobs:
     <<: *defaults
   typescript-angular:
     <<: *defaults
-  scalajs-react:
-    <<: *defaults
   # labs
   chaplin-brunch:
     <<: *defaults
   canjs_require:
     <<: *defaults
-  kendo:
-    <<: *defaults
   rappidjs:
-    <<: *defaults
-  sapui5:
     <<: *defaults
   react-alt:
     <<: *defaults
@@ -110,21 +109,13 @@ jobs:
     <<: *defaults
   somajs_require:
     <<: *defaults
-  sammyjs:
-    <<: *defaults
   puremvc:
     <<: *defaults
-  extjs_deftjs:
-    <<: *defaults
   exoskeleton:
-    <<: *defaults
-  react-backbone:
     <<: *defaults
   angular2:
     <<: *defaults
   knockoutjs_require:
-    <<: *defaults
-  durandal:
     <<: *defaults
   somajs:
     <<: *defaults
@@ -160,7 +151,9 @@ workflows:
     jobs:
       - backbone
       - dojo
+      - preact
       - react
+      - react-redux
       - vue
       - angularjs
       - knockback
@@ -173,14 +166,14 @@ workflows:
       - knockoutjs
       - polymer
       - flight
+      - lit
   # second tab - compiled-to-js frameworks
   compiled-to-js:
     jobs:
-      - spine
       # elm is not working very well
+      - svelte
       - typescript-react
       - binding-scala
-      - vanilladart
       - angular-dart
       - serenadejs
       - js_of_ocaml
@@ -189,16 +182,12 @@ workflows:
       - humble
       - closure
       - typescript-angular
-      - scalajs-react
   # third tab - labs
   labs:
     jobs:
       - chaplin-brunch
       - canjs_require
-      - kendo
       - rappidjs
-      # Sapui5 is too broken in layout
-      # - sapui5
       - react-alt
       # App internal error
       # - webrx
@@ -206,9 +195,7 @@ workflows:
       - somajs_require
       - sammyjs
       - puremvc
-      - extjs_deftjs
       - exoskeleton
-      - react-backbone
       - angular2
       - knockoutjs_require
       - durandal

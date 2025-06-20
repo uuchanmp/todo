@@ -1,8 +1,16 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
+import { service } from '@ember/service';
 
-export default Ember.Route.extend({
-	repo: Ember.inject.service(),
-	model() {
-		return this.get('repo').findAll();
+/**
+ * Handles app boot and general app one-time setup things.
+ */
+export default class Application extends Route {
+	@service repo;
+
+	beforeModel() {
+		/**
+		 * Load from localStorage
+		 */
+		this.repo.load();
 	}
-});
+}

@@ -36,8 +36,6 @@ const frameworkFolders = {
   'angular-dart': 'angular-dart/web',
   'chaplin-brunch': 'chaplin-brunch/public',
   duel: 'duel/www',
-  extjs: 'extjs_deftjs',
-  vanilladart: 'vanilladart/build/web'
 }
 const getExampleFolder = framework => frameworkFolders[framework] || framework
 
@@ -51,18 +49,14 @@ const noLocalStorageCheck = {
   js_of_ocaml: true,
   reagent: true,
   rappidjs: true,
-  kendo: true,
   exoskeleton: true,
-  'react-backbone': true,
   puremvc: true,
-  extjs_deftjs: true,
   'typescript-backbone': true,
   enyo_backbone: true,
   foam: true
 }
 
 const noLocalStorageSpyCheck = {
-  spine: true,
   canjs: true,
   canjs_require: true
 }
@@ -91,7 +85,10 @@ const badLocalStorageFormat = {
 const blurAfterType = {
   ampersand: true,
   dijon: true,
-  duel: true
+  duel: true,
+  jquery: true,
+  vanillajs: true,
+  'vanilla-es6': true
 }
 
 // add after typing if `...{enter}` is not enough for some frameworks
@@ -101,6 +98,11 @@ const safeBlur = $el => {
     const event = new Event('blur', {force: true})
     $el.get(0).dispatchEvent(event)
   }
+}
+
+// Some frameworks need to avoid runtime determination of selector type.
+const usesIDSelectors = {
+  polymer: false
 }
 
 const title = `TodoMVC - ${framework}`
@@ -262,10 +264,8 @@ const checkNumberOfCompletedTodosInLocalStorage = n => {
               }
               // MOST apps use "completed" property to mark task
               // canjs uses "complete" property, 😡
-              // scalajs-react uses "isCompleted"
               const completed = Cypress._.filter(items, { completed: true }).
-                concat(Cypress._.filter(items, { complete: true })).
-                concat(Cypress._.filter(items, { isCompleted: true }))
+                concat(Cypress._.filter(items, { complete: true }))
               return completed.length === n
             } catch (e) {
               return
@@ -444,7 +444,14 @@ Cypress._.times(N, () => {
       // same tests - because our assertions often use `.should('have.class', ...)`
       cy.contains('h1', 'todos').should('be.visible')
       cy.document().then(doc => {
-        if (doc.querySelector('input#new-todo')) {
+        if (framework in usesIDSelectors) {
+          setSelectors(usesIDSelectors[framework])
+          createTodoCommands(usesIDSelectors[framework])
+        } else if (doc.querySelector('input#new-todo') && doc.querySelector('input.new-todo')) {
+          throw new Error(
+            'Cannot determine what kind of selectors this app uses. Add it to usesIDSelectors.'
+          )
+        } else if (doc.querySelector('input#new-todo')) {
           cy.log('app uses ID selectors')
           setSelectors(true)
           createTodoCommands(true)

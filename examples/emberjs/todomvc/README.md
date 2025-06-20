@@ -1,15 +1,53 @@
-# Ember.js TodoMVC Example using Ember CLI
+# todomvc
 
-> A framework for creating ambitious web applications.
+## Prerequisites
 
-> _[Ember.js - emberjs.com](http://emberjs.com)_
-> _[Ember CLI - ember-cli.com](http://ember-cli.com)_
+You will need the following things properly installed on your computer.
 
-## Note for people updating this app.
+- [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/) (with npm)
+- [Ember CLI](https://cli.emberjs.com/release/)
+- [Google Chrome](https://google.com/chrome/)
 
-The `index.html` and the `assets` folder in the parent folder as symlinks into the items with the
-same names inside `dist`. The `dist` folder has to be checked in git and built for production.
+## Installation
 
-To work on this comment `<base href="/examples/ember-cli/index.html" />` in the `app/index.html`
-and uncommented it back before doing the production build.
+- `git clone <repository-url>` this repository
+- `cd todomvc`
+- `pnpm install`
 
+## Running / Development
+
+- `ember serve`
+- Visit your app at [http://localhost:4200](http://localhost:4200).
+- Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
+
+### Code Generators
+
+Make use of the many generators for code, try `ember help generate` for more details
+
+### Running Tests
+
+- `ember test`
+- `ember test --server`
+
+### Linting
+
+- `pnpm run lint`
+- `pnpm lint:fix`
+
+### Building
+
+- `ember build` (development)
+- `ember build --environment production` (production)
+
+### Deploying
+
+Specify what it takes to deploy your app.
+
+## Further Reading / Useful Links
+
+- [ember.js](https://emberjs.com/)
+- [ember-cli](https://cli.emberjs.com/release/)
+- Development Browser Extensions
+  - [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
+  - [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
